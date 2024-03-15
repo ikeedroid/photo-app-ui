@@ -2,9 +2,9 @@ name: Docker Image CI CD
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
   workflow_dispatch:
 
 env:
@@ -12,9 +12,8 @@ env:
   IMAGE_TAG: ${{ github.run_id }}
 
 jobs:
-
   build_image:
-    name: Build Container Image  
+    name: Build Container Image
 
     runs-on: ubuntu-latest
     defaults:
@@ -22,7 +21,11 @@ jobs:
         working-directory: photo-app-ui
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME:$IMAGE_TAG
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME:$IMAGE_TAG
